@@ -9,6 +9,7 @@ public class Philosopher extends Thread
     private int right;
     private PhilosophersTable myTable;
 
+    // Constructor.
     public Philosopher(int location, PhilosophersTable table)
     {
         this.myTable = table;
@@ -27,60 +28,51 @@ public class Philosopher extends Thread
         }
     }
 
-    // handles the sitting arrangement around the table per philosopher.
+    // Handles the sitting arrangement around the table per philosopher.
+    //      for convenience - left neighbor is set to be the location itself, and right is location+1
+    //      to create a round table, philosopher num.4 right neighbor is set to '0'.
     private void setLocation(int location)
     {
-        if (location == 0)
-        {
-            this.left = 4;
-            this.right = 1;
-        }
         if (location == 4)
         {
+            this.left = location;
             this.right = 0;
-            this.left = 3;
         }
         else
         {
-            this.right = location + 1;
-            this.left = location - 1;
+            this.left = location;
+            this.right = location+1;
+
         }
     }
 
-    private synchronized void tryToEat()
+    // wait() is inside 'takeStick' function.
+    private void tryToEat()
     {
         while (true)
         {
-            try
-            {
-                if (this.myTable.takeStick(this.left))
-                    if (this.myTable.takeStick(this.right))
-                        break;
-                    else
-                    {
-                        wait();
-                        if (this.myTable.takeStick(this.right))
-                            break;
-                        else
-                            this.myTable.returnStick(this.left);
-                    }
-                wait();
-            }
-            catch (InterruptedException e) {}
+            if (this.myTable.takeStick(this.left))
+                if (this.myTable.takeStick(this.right))
+                    break;
+                else
+                    this.myTable.returnStick(this.left);
         }
     }
 
+    // random time for eating.
     private void eat()
     {
-        try {sleep((long)(Math.random() * 100));}
+        try {sleep((long)(Math.random() * 10000));}
         catch (InterruptedException e) {}
     }
 
+    // uses eat() to avoid code duplications; as this function job is the same as eat().
     private void think()
     {
         this.eat();
     }
 
+    // releases occupied sticks. notifyAll() is inside returnStick().
     private void doneEating()
     {
         this.myTable.returnStick(this.left);
