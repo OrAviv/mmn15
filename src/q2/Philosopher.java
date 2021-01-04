@@ -79,4 +79,3 @@ public class Philosopher extends Thread
         this.myTable.returnStick(this.right);
     }
 }
-
