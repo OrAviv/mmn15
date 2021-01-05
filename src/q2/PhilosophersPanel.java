@@ -1,8 +1,8 @@
 package q2;
-
 import javax.swing.*;
 import java.awt.*;
 
+// Panel for Philosophers
 public class PhilosophersPanel extends JPanel
 {
     JPanel panel;
@@ -14,6 +14,7 @@ public class PhilosophersPanel extends JPanel
         this.table = new PhilosophersTable(this);
     }
 
+    // repaint() gets called from Philosopher class after each change of every philosopher.
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);

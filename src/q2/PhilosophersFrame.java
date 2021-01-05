@@ -2,11 +2,11 @@ package q2;
 
 import javax.swing.*;
 
+// Philosophers Frame class.
 public class PhilosophersFrame extends JFrame
 {
     JFrame frame;
     private PhilosophersPanel panel;
-    ;
 
     public PhilosophersFrame()
     {

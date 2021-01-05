@@ -1,5 +1,4 @@
 package q2;
-
 import javax.swing.*;
 
 // Philosopher class; all based on -5- philosophers sitting around a table
@@ -9,7 +8,7 @@ public class Philosopher extends Thread
     private int left;
     // right neighbor
     private int right;
-
+    // Philosopher location around the table.
     private int location;
     private PhilosophersTable myTable;
     private JPanel myPanel;
@@ -23,19 +22,20 @@ public class Philosopher extends Thread
         this.myPanel = panel;
     }
 
+    // Printing for personal use.
     @Override
     public void run()
     {
         while (true)
         {
-            System.out.println(this.left+" is trying to eat");
+            System.out.println("Philosopher "+this.location+" is trying to eat");
             this.tryToEat();
-            System.out.println(this.left+" is eating");
+            System.out.println("Philosopher "+this.location+" is eating");
             this.eat();
             myPanel.repaint();
-            System.out.println(this.left+" is DONE to eat");
+            System.out.println("Philosopher "+this.location+" is DONE to eat");
             this.doneEating();
-            System.out.println(this.left+" is thinking");
+            System.out.println("Philosopher "+this.location+" is thinking");
             this.think();
         }
     }
@@ -58,7 +58,10 @@ public class Philosopher extends Thread
         }
     }
 
-    // wait() is inside 'takeStick' function.
+    // tryToEat() tries to catch 2 sticks, by asking for the appropriate stick(left or right) and for which philosopher
+    //      to catch it for.
+    //      takeStick() is 'synchronized' so only one philosopher thread work upon it.
+    //      wait() is inside 'takeStick' function.
     private void tryToEat()
     {
         while (true)

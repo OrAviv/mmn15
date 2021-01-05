@@ -7,6 +7,7 @@ public class PhilosophersTable
 {
     // theres only -5- philosophers around a table.
     public static final int tableSize = 5;
+    public static final int NOT_OCCUPIED = -1;
     private Philosopher[] philosophers;
     // chopsticks to eat; '-1' - stick is not occupied, 'location'(=philosopher number) - stick is occupied.
     private int[] chopsticks;
@@ -19,9 +20,9 @@ public class PhilosophersTable
         this.myPanel = panel;
         this.philosophers = new Philosopher[tableSize];
         this.chopsticks = new int[tableSize];
-        // re-setting chopsticks array.
+        // initial settings for chopsticks array.
         for (int i=0; i<tableSize; i++)
-            this.chopsticks[i] = -1;
+            this.chopsticks[i] = NOT_OCCUPIED;
 
         for (int i=0; i<tableSize; i++)
         {
@@ -30,13 +31,13 @@ public class PhilosophersTable
         }
     }
 
-    protected synchronized boolean takeStick(int stickLocation, int philosopherNumber)
+    protected synchronized boolean takeStick(int stickLocation, int philosopherLocation)
     {
         try
         {
-            if (this.chopsticks[stickLocation] == -1)
+            if (this.chopsticks[stickLocation] == NOT_OCCUPIED)
             {
-                this.chopsticks[stickLocation] = philosopherNumber;
+                this.chopsticks[stickLocation] = philosopherLocation;
                 return true;
             }
             wait();
@@ -47,13 +48,15 @@ public class PhilosophersTable
 
     protected synchronized void returnStick(int stickLocation)
     {
-        this.chopsticks[stickLocation] = -1;
+        this.chopsticks[stickLocation] = NOT_OCCUPIED;
         notifyAll();
     }
 
-    public boolean isPhilosopherEating(int leftNeighbor, int rightNeighbor, int philosopherNumber)
+    // checks if philosopher sticks is occupied by him.
+    public boolean isPhilosopherEating(int leftStick, int rightStick, int philosopherLocation)
     {
-        return (this.chopsticks[leftNeighbor] == philosopherNumber && this.chopsticks[rightNeighbor] == philosopherNumber);
+        return (this.chopsticks[leftStick] == philosopherLocation &&
+                this.chopsticks[rightStick] == philosopherLocation);
     }
 }
 
