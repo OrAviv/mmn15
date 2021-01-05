@@ -2,7 +2,10 @@ package q2;
 import javax.swing.*;
 import java.awt.*;
 
-// Panel for Philosophers
+// Panel for Philosophers.
+//      this Panel gives a visual way to Philosophers problem;
+//      philosophers are circles, and whenever they eat theirs circle is drawn in blue,
+//      and light gray whenever they are not.
 public class PhilosophersPanel extends JPanel
 {
     JPanel panel;
