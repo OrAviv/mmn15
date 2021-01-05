@@ -1,9 +1,11 @@
 package q2;
 
+import javax.swing.*;
+
 public class Main
 {
     public static void main(String[] args)
     {
-        PhilosophersTable table = new PhilosophersTable();
+        PhilosophersFrame frame = new PhilosophersFrame();
     }
 }

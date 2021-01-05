@@ -1,5 +1,7 @@
 package q2;
 
+import javax.swing.*;
+
 // Philosopher class; all based on -5- philosophers sitting around a table
 public class Philosopher extends Thread
 {
@@ -7,13 +9,18 @@ public class Philosopher extends Thread
     private int left;
     // right neighbor
     private int right;
+
+    private int location;
     private PhilosophersTable myTable;
+    private JPanel myPanel;
 
     // Constructor.
-    public Philosopher(int location, PhilosophersTable table)
+    public Philosopher(int location, PhilosophersTable table, JPanel panel)
     {
+        this.location = location;
         this.myTable = table;
         this.setLocation(location);
+        this.myPanel = panel;
     }
 
     @Override
@@ -21,9 +28,14 @@ public class Philosopher extends Thread
     {
         while (true)
         {
+            System.out.println(this.left+" is trying to eat");
             this.tryToEat();
+            System.out.println(this.left+" is eating");
             this.eat();
+            myPanel.repaint();
+            System.out.println(this.left+" is DONE to eat");
             this.doneEating();
+            System.out.println(this.left+" is thinking");
             this.think();
         }
     }
@@ -51,8 +63,8 @@ public class Philosopher extends Thread
     {
         while (true)
         {
-            if (this.myTable.takeStick(this.left))
-                if (this.myTable.takeStick(this.right))
+            if (this.myTable.takeStick(this.left, this.location))
+                if (this.myTable.takeStick(this.right, this.location))
                     break;
                 else
                     this.myTable.returnStick(this.left);
